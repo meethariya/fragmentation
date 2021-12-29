@@ -1,0 +1,105 @@
+{% extends "frag/base.html" %} {% block content %} {% load static %}
+{% if alert %}
+<div class="alert alert-{{result}} alert-dismissible fade show" role="alert">
+  <strong>{{outcome}}!</strong> {{outcome_message}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="row">
+  {% for att in info %}
+    <div class="col-sm-{{att.size}}">
+      <h6 class="alert alert-success fs-6">DB:- {{att.db}}
+        <span class="float-end fs-6">Table:- Product</span>
+      </h6>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            {% for i in att.cols %}
+              <th scope="col">{{i}}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in att.rows %}
+            <tr>
+              {% for i in row %}
+                <td scope="row">{{i}}</th>
+              {% endfor %}
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h6>Total Entries:{{att.records}}</h6>
+    </div>
+  {% endfor %}
+  <div class="col-sm-4">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <label for="id_parent" class="my-1"> Fragmentation Type</label>
+      <select name="type" id="id_parent" data-child-id="id_child" class="dependent-selects__parent form-select my-2">
+        <option value="vertical" data-child-options="n|#p|#s">Vertical</option>
+        <option value="horizontal" selected data-child-options="60|#50|#40">Horizontal</option>
+      </select>
+      <label for="id_child" class="my-1"> Distribution</label>
+      <select name="value" id="id_child" class="dependent-selects__child form-select my-2">
+        <option value="n">Name</option>
+        <option value="p">Price</option>
+        <option value="s">Seller</option>
+        <option value="60">60-40</option>
+        <option value="50" selected>50-50</option>
+        <option value="40">40-60</option>
+      </select>
+      {% if mixed %}
+        <label for="id_parent2" class="my-1"> Fragmentation Type</label>
+        <select name="type2" id="id_parent2" data-child-id="id_child2" class="dependent-selects__parent form-select my-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Make Sure to choose Horizontal and  Vertical Fragmentation both!!">
+          <option value="vertical" data-child-options="n|#p|#s">Vertical</option>
+          <option value="horizontal" selected data-child-options="60|#50|#40">Horizontal</option>
+        </select>
+        <label for="id_child2" class="my-1"> Distribution</label>
+        <select name="value2" id="id_child2" class="dependent-selects__child form-select my-2">
+          <option value="n">Name</option>
+          <option value="p">Price</option>
+          <option value="s">Seller</option>
+          <option value="60">60-40</option>
+          <option value="50" selected>50-50</option>
+          <option value="40">40-60</option>
+        </select>
+      {% endif %}
+      <input type="submit" name = "action" value="Fragment" class="btn btn-outline-success my-2 mr-2">
+      <input type="submit" name = "action" value="Reset Database" class="btn btn-outline-danger my-2 mr-2">
+      <input type="submit" name = "action" value="Mixed" class="btn btn-outline-primary float-end my-2">
+    </form>
+  </div>
+</div>
+{% if tworows %}
+<div class="row">
+  {% for att in info2 %}
+    <div class="col-sm-{{att.size}}">
+      <h6 class="alert alert-success fs-6">DB:- {{att.db}}
+        <span class="float-end fs-6">Table:- Product</span>
+      </h6>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            {% for i in att.cols %}
+              <th scope="col">{{i}}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in att.rows %}
+            <tr>
+              {% for i in row %}
+                <td scope="row">{{i}}</th>
+              {% endfor %}
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h6>Total Entries:{{att.records}}</h6>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+<script defer src="{%static 'frag/js/dependent-selects.js'%}"></script>
+{% endblock content%}
